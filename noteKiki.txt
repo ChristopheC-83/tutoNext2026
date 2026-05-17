@@ -1,0 +1,33 @@
+tailwind pour le style
+
+prisma pour la base de données
+npm i prisma@6 @prisma/client@6
+puis
+npx prisma init
+
+zod pour validation
+npm i zod
+
+zustand pour le state management
+npm i zustand
+
+on va faire ici l'auth à la main avec bcfrypt et JWT
+npm i bcrypt jsonwebtoken
+pour les types de ces librairies
+npm i -D @types/bcrypt@6 @types/jsonwebtoken@9
+
+notification avec toastify
+npm i react-toastify
+
+icones avec lucide
+npm i lucide-react
+
+recherche avec useDebounce
+npm i use-debounce
+
+et de fausses données avec faker
+npm i @faker-js/faker
+
+tsx pour la seed 
+npm i tsx
+

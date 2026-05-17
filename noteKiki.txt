@@ -4,6 +4,13 @@ prisma pour la base de données
 npm i prisma@6 @prisma/client@6
 puis
 npx prisma init
+puis on peut voir notre db dans 
+npx prisma studio
+dans prisma.scema, on crée notre table/model 
+puis on crée la migration et on envoie en db
+npx prisma migrate dev --name nom_migration
+
+
 
 zod pour validation
 npm i zod

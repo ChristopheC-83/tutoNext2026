@@ -1,15 +1,59 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+//  Fichier à modifier au niveau du client
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+//  puis on crée nos tables/models
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  avatarUrl String?   @default("/uploads/clients/default.svg")
+  name      String?
+  createdAt DateTime  @default(now())
+  clients   Client[]
+  invoices  Invoice[]
+}
+
+model Client {
+  id        String    @id @default(cuid())
+  name      String
+  avatarUrl String?   @default("/uploads/clients/default.svg")
+  email     String?
+  createdAt DateTime  @default(now())
+  company   String?
+  phone     String?
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invoices  Invoice[]
+
+  @@unique([userId, email])
+}
+
+model Invoice {
+  id        String        @id @default(cuid())
+  number    Int
+  status    InvoiceStatus @default(DRAFT)
+  amount   Float
+  dueDate   DateTime
+  createdAt DateTime      @default(now())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientId  String
+  client    Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, number])
 }

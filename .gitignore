@@ -44,3 +44,9 @@ next-env.d.ts
 # images
 public/uploads*
 /app/generated/prisma
+
+/app/generated/prisma
+
+/app/generated/prisma
+
+/app/generated/prisma

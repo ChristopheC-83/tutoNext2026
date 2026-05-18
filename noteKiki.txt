@@ -35,6 +35,13 @@ npm i use-debounce
 et de fausses données avec faker
 npm i @faker-js/faker
 
-tsx pour la seed 
+tsx pour la seed, executer une fonction à partir du terminal
 npm i tsx
 
+Autres lib a installer
+
+Recharts :
+npm install recharts@3
+
+Sharp :
+npm i sharp@0.34.5

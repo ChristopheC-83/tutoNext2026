@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Logout from "./Logout";
 
 export default function Sidebar() {
   const links = [
@@ -48,7 +49,7 @@ export default function Sidebar() {
             </Link>
           );
         })}
-        <div>{/* <Logout /> */} Logout</div>
+        <Logout />
       </nav>
     </aside>
   );

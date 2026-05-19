@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Invoicer",
+  title: "Tuto Next 2026",
   description:
     "An application for freelancers to monitor their invoices and clients",
   icons: {

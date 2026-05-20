@@ -56,46 +56,63 @@ export async function registerAction(data: RegisterInputsType) {
 }
 
 export async function loginAction(data: LoginInputsType) {
-  //Check type
+  // on vérifie le type des données
   const safeParse = loginSchema.safeParse(data);
   if (!safeParse.success) {
     safeLogger(safeParse);
     const message = zodParseErrorsToReadable(safeParse);
     throw new Error(message);
   }
-  //Type is fine
+  // si Type est ok
   const { email, password } = safeParse.data;
-  //Check user exists
+  // le user existe il ?
+  //  on cherche une réponse unique dans la db
   const user = await prisma.user.findUnique({ where: { email } });
-  //Take user hashedPass, or invalid one (to always compare two ashes)
-  const hashedPassword =
-    user?.password ?? "invalidinvalidinvalidinvalidinvalidinvalidinv";
+  // on récupère le password hashé
+  //  si on a un user et si on a un passhashé
+  //  sinon on revoie "invalid"
+  const hashedPassword = user?.password ?? "invalid";
+  //  on compare avec bcrypt le mot de passe envoyé et le mot de passe hashé de la db
   const isPassValid = compare(password, hashedPassword);
-  //If no user or wrong password
+  // si pas de user ou si password pas bon, on sort
   if (!user || !isPassValid) {
     throw new Error("Invalid credentials");
   }
-  //If user found, and good password, make token
+  // on va chercher le jwt_secret, le grain de sel
+  //  si pas de secret, on sort
   if (!process.env.JWT_SECRET) {
     throw new Error("JWT_SECRET is not defined");
   }
+
+  //  si tout va bien, on genere le token
   const token = sign(
     { userId: user.id, email: user.email },
     process.env.JWT_SECRET,
+    //  on donne une durée de vie
     { expiresIn: "7d" },
   );
-  //Set cookie with cookies API :
+  // on envoie le token dans les cookies
   const cookiesStore = await cookies();
   cookiesStore.set("token", token, {
+    //  on ajoute des parametres
+    //  http only, plus sécurisé, inaccessible en javascript du front
     httpOnly: true,
+    //  secure => https en production
+    //  en dev, on reste en http, sinon on ne pourrait pas tester
     secure: process.env.NODE_ENV === "production",
+    // protection contre CSRF
+    // Empêche un site malveillant de faire des requêtes à ton API
+    //  en utilisant la session utilisateur.
     sameSite: "lax",
+    //  valide sur tout le site
     path: "/",
+    //  validité 7 jours
     maxAge: 7 * 24 * 60 * 60,
   });
 }
 
 export async function logoutAction() {
+  //  on vire tout simplement le JWT des cookies de l'utilisateur
   const cookiesStore = await cookies();
   cookiesStore.delete("token");
 }

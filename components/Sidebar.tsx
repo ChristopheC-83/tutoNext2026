@@ -30,7 +30,7 @@ export default function Sidebar() {
     >
       <Link
         className="p-6 text-xl font-bold border-b flex gap-x-4 hover:text-blue-600 hover:border-b-white"
-        href={"/dashboard"}
+        href={"/"}
       >
         <Image src={"/favicon.svg"} width={32} height={32} alt="logo" />
         <span className="hidden sm:inline">Invoicer</span>

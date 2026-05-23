@@ -73,7 +73,7 @@ export async function loginAction(data: LoginInputsType) {
   //  sinon on revoie "invalid"
   const hashedPassword = user?.password ?? "invalid";
   //  on compare avec bcrypt le mot de passe envoyé et le mot de passe hashé de la db
-  const isPassValid = compare(password, hashedPassword);
+  const isPassValid = await compare(password, hashedPassword);
   // si pas de user ou si password pas bon, on sort
   if (!user || !isPassValid) {
     throw new Error("Invalid credentials");

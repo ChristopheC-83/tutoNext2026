@@ -29,14 +29,19 @@ export default function AuthForm({ mode }: { mode: "login" | "register" }) {
       if (isRegister) {
         await registerAction({ name, email, password });
         toast.success("You are registered. Please now login.");
+        //  si enregistrement ok, on va vers login
         router.push("/login");
       } else {
         await loginAction({ email, password });
         toast.success("You are logged in.");
+        //  si login ok, on va vers dashboard
         router.push("/dashboard");
       }
     } catch (error) {
       const message =
+        //  si l'erreur vient d'un thow Error alors error.message
+        //  en provenance de notre fichier action
+        //  sinon message generique
         error instanceof Error ? error.message : "Something went wrong";
       setError(message);
       toast.error(message);

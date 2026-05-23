@@ -11,7 +11,7 @@ export async function dashboardAction(): Promise<DashboardResponse> {
   const user = await requireUser();
 
   // requetes en parrallele à prisma
-  //  Agg pour aggregate de données
+  //  Agg pour aggregate de données 
   const [
     totalInvoices,
     clientsCount,

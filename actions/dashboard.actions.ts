@@ -7,7 +7,7 @@ import { DashboardResponse } from "@/types/dashboard.types";
 import { InvoiceWithClient } from "@/types/invoices.types";
 
 export async function dashboardAction(): Promise<DashboardResponse> {
-  // on valide et récupérons le user qui appelle l'action
+  // on valide et récupére le user qui appelle l'action
   const user = await requireUser();
 
   // requetes en parrallele à prisma

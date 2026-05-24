@@ -45,3 +45,6 @@ npm install recharts@3
 
 Sharp :
 npm i sharp@0.34.5
+
+Pour les charts de recharts
+npm i recharts@3.7

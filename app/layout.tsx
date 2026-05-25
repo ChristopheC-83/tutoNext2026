@@ -3,6 +3,7 @@ import "./globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import ThemedToastContainer from "@/components/ThemedToastContainer";
 import "react-toastify/dist/ReactToastify.css";
+import ThemeHydrator from "@/components/ThemeHydrator";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,8 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`h-full antialiased`}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-white text-black `}
+        className={`${geistSans.variable} ${geistMono.variable} bg-white text-black dark:bg-gray-900 dark:text-white`}
       >
+        <ThemeHydrator />
         <ThemedToastContainer />
         {children}
       </body>

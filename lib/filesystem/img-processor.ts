@@ -1,6 +1,6 @@
 import path from "path";
 import sharp from "sharp";
-import { supabase } from "../supabase/supabase";
+// import { supabase } from "../supabase/supabase";
 import fs from "fs";
 
 export async function processAvatarFile(
@@ -30,19 +30,19 @@ export async function processAvatarFile(
   const folder = mode === "client" ? "clients" : "users";
   //  on donne un nom de fichier unique random
   const fileName = `${folder}/${crypto.randomUUID()}.jpg`;
-  const { error } = await supabase.storage
-    .from("invoicer-avatars")
-    .upload(fileName, croppedBuffer, {
-      contentType: "image/jpeg",
-      upsert: true,
-    });
-  if (error) {
-    throw new Error("Failed to upload avatar: " + error);
-  }
-  const { data: publicUrl } = supabase.storage
-    .from("invoicer-avatars")
-    .getPublicUrl(fileName);
-  return publicUrl.publicUrl;
+  // const { error } = await supabase.storage
+  //   .from("invoicer-avatars")
+  //   .upload(fileName, croppedBuffer, {
+  //     contentType: "image/jpeg",
+  //     upsert: true,
+  //   });
+  // if (error) {
+  //   throw new Error("Failed to upload avatar: " + error);
+  // }
+  // const { data: publicUrl } = supabase.storage
+  //   .from("invoicer-avatars")
+  //   .getPublicUrl(fileName);
+  // return publicUrl.publicUrl;
 }
 
 export function fileFromPath(filePath: string): File {

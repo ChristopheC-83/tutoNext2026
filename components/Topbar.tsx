@@ -4,7 +4,7 @@ import UserMenu from "./UserMenu";
 
 export default function Topbar() {
   return (
-    <header className="shadow px-6 py-4 flex items-center justify-between  bg-gray-200 ">
+    <header className="shadow px-6 py-4 flex items-center justify-between dark:bg-gray-800 bg-gray-200">
       <div className="ml-10">
         <SearchComponent />
       </div>

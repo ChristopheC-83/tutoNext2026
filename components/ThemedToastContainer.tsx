@@ -1,10 +1,10 @@
 "use client";
 
-// import { useUiStore } from "@/store/ui.store";
+import { useUiStore } from "@/store/ui.store";
 import { ToastContainer } from "react-toastify";
 
 export default function ThemedToastContainer() {
-  //   const theme = useUiStore((store) => store.theme);
+  const theme = useUiStore((store) => store.theme);
 
   return (
     <ToastContainer
@@ -16,7 +16,7 @@ export default function ThemedToastContainer() {
       rtl={false}
       pauseOnFocusLoss
       pauseOnHover
-      //   theme={theme}
+      theme={theme}
     />
   );
 }

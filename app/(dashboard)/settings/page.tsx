@@ -1,5 +1,5 @@
-// import AppearanceCard from "@/components/AppearanceCard";
 // import ProfileCard from "@/components/ProfileCard";
+import AppearanceCard from "@/components/AppearanceCard";
 import Title from "@/components/Title";
 import { Metadata } from "next";
 
@@ -18,7 +18,7 @@ export default function SettingsPage() {
       <Title text="Settings" sub="Manage your settings" />
       <div className="flex flex-col gap-y-6">
         {/* <ProfileCard /> */}
-        {/* <AppearanceCard /> */}
+        <AppearanceCard />
       </div>
     </div>
   );

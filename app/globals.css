@@ -3,6 +3,9 @@
 @source "./app/**/*.{js,ts,jsx,tsx}";
 @source "./components/**/*.{js,ts,jsx,tsx}";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }

@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logout from "./Logout";
+import { useAppStore } from "@/store/app.store";
 
 export default function Sidebar() {
   const links = [
@@ -23,10 +24,11 @@ export default function Sidebar() {
 
   const pathname = usePathname();
 
-  // const open = useAppStore((store) => store.open);
+  const open = useAppStore((store) => store.open);
+
   return (
     <aside
-      className={`fixed top-0 left-0 z-10 h-full w-20 sm:w-52 flex-col rounded-2xl bg-stone-900 text-white transform transition-transform duration-900 ease-in-out `}
+      className={`fixed top-0 left-0 z-10 h-full w-20 sm:w-52 flex-col rounded-2xl bg-stone-900 text-white transform transition-transform duration-700 ease-in-out ${open ? "translate-x-0" : "-translate-x-full"} `}
     >
       <Link
         className="p-6 text-xl font-bold border-b flex gap-x-4 hover:text-blue-600 hover:border-b-white"

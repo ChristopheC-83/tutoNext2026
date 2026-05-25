@@ -1,3 +1,6 @@
+// import AppearanceCard from "@/components/AppearanceCard";
+// import ProfileCard from "@/components/ProfileCard";
+import Title from "@/components/Title";
 import { Metadata } from "next";
 
 //  Ces metadatas écrasent celles du Layout
@@ -10,5 +13,13 @@ export const metadata: Metadata = {
 };
 
 export default function SettingsPage() {
-  return <div>SettingsPage</div>;
+  return (
+    <div className="pl-2">
+      <Title text="Settings" sub="Manage your settings" />
+      <div className="flex flex-col gap-y-6">
+        {/* <ProfileCard /> */}
+        {/* <AppearanceCard /> */}
+      </div>
+    </div>
+  );
 }

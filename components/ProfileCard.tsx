@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { patchProfileAction } from "@/actions/settings.actions";
@@ -14,6 +15,8 @@ export default  function  ProfileCard ()  {
   const [name, setName] = useState(user?.name ?? "");
   const [password, setPassword] = useState("");
   const [file, setFile] = useState<File | null>(null);
+
+  //  nlob pour voir le nouvel avatar avant qu'il soit envoyé en db
   const [preview, setPreview] = useState<string | null>(
     user?.avatarUrl ?? null,
   );
@@ -25,10 +28,13 @@ export default  function  ProfileCard ()  {
     setPreview(user.avatarUrl ?? null);
   }, [user]);
 
-  //Clenup blob memory
+  // Qd on créé un blob, une url temporaire
+  // il faut penser à cleanup l'url après utilisation
   useEffect(() => {
     const previousPreview = preview;
     return () => {
+      //  qd on créé le blob, ce terme apparait dans l'url !
+      //  pratique pour le cibler et l'effacer
       if (previousPreview?.startsWith("blob:")) {
         URL.revokeObjectURL(previousPreview);
       }
@@ -36,18 +42,20 @@ export default  function  ProfileCard ()  {
   }, [preview]);
 
   // Handle file
-  const handleFile = (file: File) => {
+  function handleFile (file: File) {
     setFile(file);
+    //  setPreview permet d'avoir une version temporaire de l'url de l'image
+    //  pour avoir une preview du nouvelle avatar
     const url = URL.createObjectURL(file);
     setPreview(url);
+    console.log(url)
   };
 
-  const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
-    //Strip normal behavior
+    async function handleSubmit  (evt: React.FormEvent<HTMLFormElement>)  {
+    
     evt.preventDefault();
-    //Loading indicator
     setLoading(true);
-    //Call action
+      
     try {
       const updatedUser = await patchProfileAction({ name, password, file });
       setUser(updatedUser);
@@ -66,7 +74,8 @@ export default  function  ProfileCard ()  {
   if (!user) return <>No user</>;
 
   return (
-    <div className="pt-6 bg-gray-50 shadow-2xl rounded-2xl w-full p-4 overflow-hidden">
+    <div className="pt-6 bg-gray-50 shadow-2xl rounded-2xl w-full p-4 overflow-hidden" 
+    >
       <h2 className="text-lg mb-2 font-bold text-indigo-900">Profile</h2>
       {/* FORM */}
       <form className="flex flex-col gap-y-2" onSubmit={handleSubmit}>
@@ -91,13 +100,14 @@ export default  function  ProfileCard ()  {
               <span className="px-3 py-2 bg-stone-800 text-white rounded-lg cursor-pointer">
                 Choisir un fichier
               </span>
-              <span className="text-sm truncate max-w-[150px]">
+              <span className="text-sm truncate max-w-37.5">
                 {file?.name || "Aucun fichier"}
               </span>
               <input
                 type="file"
                 className="hidden"
                 onChange={(evt) => {
+                  // console.log(evt.target.files ?.[0]);
                   const file = evt.target.files?.[0];
                   if (file) handleFile(file);
                 }}

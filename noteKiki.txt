@@ -51,3 +51,19 @@ npm i recharts@3.7
 
 Pour compresser les images avec sharp
 npm i sharp@0.34.5
+
+
+
+
+
+
+
+
+Mini tableau mental pour ARC :
+
+athlete profile                      → DB
+sidebar open                         → zustand/localStorage
+dark mode                            → localStorage
+jwt auth                             → cookie httpOnly
+formulaire en cours de remplissage   → localStorage
+input password                       → useState

@@ -6,6 +6,8 @@ export type ClientListItem = ClientDTO & {
   totalAmount: number;
 };
 
+// pour la pagination
+
 export type ClientListMeta = {
   total: number;
   page: number;
@@ -17,8 +19,10 @@ export type ClientListStats = {
   totalClients: number;
 };
 
+//  et un type qui les regroupe
+
 export type ClientListResponse = {
   data: ClientListItem[];
-  meta: ClientListMeta;
-  stats: ClientListStats;
+  meta: ClientListMeta; // pour la pagination
+  stats: ClientListStats; 
 };

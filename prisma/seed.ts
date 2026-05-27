@@ -1,4 +1,4 @@
-//  creatuin de données aléatoires 
+//  creation de données aléatoires 
 //  npx tsx prisma/seed.ts
 
 import { InvoiceStatus, PrismaClient } from "@prisma/client";

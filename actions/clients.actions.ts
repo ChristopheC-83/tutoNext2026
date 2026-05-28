@@ -5,7 +5,6 @@ import { processAvatarFile } from "@/lib/filesystem/img-processor";
 import { toClientDTO } from "@/lib/mappers/client.mapper";
 import { normalizePagination } from "@/lib/pagination/pagination";
 import { prisma } from "@/lib/prisma";
-
 import {
   clientSchema,
   clientUpdateSchema,
@@ -20,26 +19,21 @@ export async function getOneClientAction({
 }: {
   id: string;
 }): Promise<ClientDTO> {
-  // on valide le user connecté
+  //User guard
   const user = await requireUser();
-
-  // on appelle le client en DB avec l'id récupéré en parametre de la fonction
+  //Fetch client
   const clientDB = await prisma.client.findFirst({
     where: { id: id, userId: user.userId },
   });
-
-  // si pas de client <=> id
+  //If no client
   if (!clientDB) {
     throw new Error("No matching client");
   }
-  // on mappe le client avec le mapperDTO pour sécuriser les données envoyées au front
+  //DTO mapper
   const client = toClientDTO(clientDB);
-
   //Return
   return client;
 }
-
-
 
 export async function createClientAction(
   payload: CreateClientInputsType,
@@ -55,21 +49,17 @@ export async function createClientAction(
   const { file, ...data } = parsed.data;
   //Save avatar image
   const avatarUrl = await processAvatarFile("client", file);
-  // on envoie à la DB
+  //Call DB
   const client = await prisma.client.create({
     data: { ...data, userId: user.userId, avatarUrl },
   });
   //Buffer
-    const createdClient = toClientDTO(client);
-    
-  // on refraichit la page avec des données fraiches, ici le nouveau client
+  const createdClient = toClientDTO(client);
+  //Revalidate path
   revalidatePath("/clients");
   //Return
   return createdClient;
 }
-
-
-
 
 export async function patchOneClientAction({
   id,
@@ -110,9 +100,6 @@ export async function patchOneClientAction({
   return updatedClientMapped;
 }
 
-
-
-//  récupérer tous les clients en version paginée
 export async function getAllClientsAction({
   page = 1,
   limit = 10,
@@ -129,7 +116,7 @@ export async function getAllClientsAction({
   const [clientsRaw, total] = await Promise.all([
     prisma.client.findMany({
       where: { userId: user.userId },
-      orderBy: { createdAt: "desc" }, // createdArt et desc pourraient etre des parametres variables
+      orderBy: { createdAt: "desc" },
       skip,
       take: safeLimit,
       include: { invoices: true },
@@ -137,25 +124,23 @@ export async function getAllClientsAction({
     prisma.client.count({ where: { userId: user.userId } }),
   ]);
   //Refine data
-  const clients: ClientListItem[] = clientsRaw.map(
-    (client: (typeof clientsRaw)[number]) => {
-      const mappedClient: ClientDTO = toClientDTO(client);
-      const invoicesCount = client.invoices.length;
-      const overdueCount = client.invoices.filter(
-        (inv) => inv.status === "OVERDUE",
-      ).length;
-      const totalAmount = client.invoices.reduce(
-        (sum, inv) => sum + inv.amount,
-        0,
-      );
-      return {
-        ...mappedClient,
-        invoicesCount,
-        overdueCount,
-        totalAmount,
-      };
-    },
-  );
+  const clients: ClientListItem[] = clientsRaw.map((client) => {
+    const mappedClient: ClientDTO = toClientDTO(client);
+    const invoicesCount = client.invoices.length;
+    const overdueCount = client.invoices.filter(
+      (inv) => inv.status === "OVERDUE",
+    ).length;
+    const totalAmount = client.invoices.reduce(
+      (sum, inv) => sum + inv.amount,
+      0,
+    );
+    return {
+      ...mappedClient,
+      invoicesCount,
+      overdueCount,
+      totalAmount,
+    };
+  });
   //Return
   return {
     data: clients,

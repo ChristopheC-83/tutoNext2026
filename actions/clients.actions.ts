@@ -134,8 +134,12 @@ export async function getAllClientsAction({
       const overdueCount = client.invoices.filter(
         (inv: (typeof client.invoices)[number]) => inv.status === "OVERDUE",
       ).length;
+      // const totalAmount = client.invoices.reduce(
+      //   (sum, inv) => sum + inv.amount,
+      //   0,
+      // );
       const totalAmount = client.invoices.reduce(
-        (sum, inv) => sum + inv.amount,
+        (sum: number, inv: { amount: number }) => sum + inv.amount,
         0,
       );
       return {

@@ -27,7 +27,7 @@ async function main() {
   //Users avatars dir / files
   const usersAvatarsDir = path.join(
     process.cwd(),
-    "public/uploads/avatars/users",
+    "public/avatars/users",
   );
   const usersAvatarsFiles = fs.readdirSync(usersAvatarsDir); //[profile1.webp, profile2.webp....]
 
@@ -56,7 +56,7 @@ async function main() {
   //Clients avatars dir / files
   const clientsAvatarsDir = path.join(
     process.cwd(),
-    "public/uploads/avatars/clients",
+    "public/avatars/clients",
   );
   const clientsAvatarsFiles = fs.readdirSync(clientsAvatarsDir); //[avatar1.webp, avatar2.webp....]
 

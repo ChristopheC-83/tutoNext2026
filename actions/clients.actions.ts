@@ -124,23 +124,25 @@ export async function getAllClientsAction({
     prisma.client.count({ where: { userId: user.userId } }),
   ]);
   //Refine data
-  const clients: ClientListItem[] = clientsRaw.map((client) => {
-    const mappedClient: ClientDTO = toClientDTO(client);
-    const invoicesCount = client.invoices.length;
-    const overdueCount = client.invoices.filter(
-      (inv) => inv.status === "OVERDUE",
-    ).length;
-    const totalAmount = client.invoices.reduce(
-      (sum, inv) => sum + inv.amount,
-      0,
-    );
-    return {
-      ...mappedClient,
-      invoicesCount,
-      overdueCount,
-      totalAmount,
-    };
-  });
+  const clients: ClientListItem[] = clientsRaw.map(
+    (client: (typeof clientsRaw)[number]) => {
+      const mappedClient: ClientDTO = toClientDTO(client);
+      const invoicesCount = client.invoices.length;
+      const overdueCount = client.invoices.filter(
+        (inv) => inv.status === "OVERDUE",
+      ).length;
+      const totalAmount = client.invoices.reduce(
+        (sum, inv) => sum + inv.amount,
+        0,
+      );
+      return {
+        ...mappedClient,
+        invoicesCount,
+        overdueCount,
+        totalAmount,
+      };
+    },
+  );
   //Return
   return {
     data: clients,

@@ -123,7 +123,7 @@ export async function getAllClientsAction({
     }),
     prisma.client.count({ where: { userId: user.userId } }),
   ]);
-  //Refine data
+  // Affinement des données
   const clients: ClientListItem[] = clientsRaw.map(
     (client: (typeof clientsRaw)[number]) => {
       const mappedClient: ClientDTO = toClientDTO(client);

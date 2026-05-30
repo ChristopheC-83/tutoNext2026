@@ -128,8 +128,11 @@ export async function getAllClientsAction({
     (client: (typeof clientsRaw)[number]) => {
       const mappedClient: ClientDTO = toClientDTO(client);
       const invoicesCount = client.invoices.length;
+      // const overdueCount = client.invoices.filter(
+      //   (inv) => inv.status === "OVERDUE",
+      // ).length;
       const overdueCount = client.invoices.filter(
-        (inv) => inv.status === "OVERDUE",
+        (inv: (typeof client.invoices)[number]) => inv.status === "OVERDUE",
       ).length;
       const totalAmount = client.invoices.reduce(
         (sum, inv) => sum + inv.amount,

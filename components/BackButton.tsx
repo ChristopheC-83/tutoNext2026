@@ -3,15 +3,15 @@
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function BackButton()  {
+export default function BackButton() {
   const router = useRouter();
 
-  const handleClick = () => {
+  function handleClick() {
     if (window.history.length > 1) {
       router.back();
     }
     router.push("/dashboard");
-  };
+  }
 
   return (
     <div
@@ -22,5 +22,4 @@ export default function BackButton()  {
       Back
     </div>
   );
-};
-
+}

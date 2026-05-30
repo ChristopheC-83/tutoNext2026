@@ -1,7 +1,7 @@
 "use server";
 
 import { requireUser } from "@/lib/auth/requireUser";
-import { processAvatarFile } from "@/lib/filesystem/img-processor";
+import { deleteOldAvatar, processAvatarFile } from "@/lib/filesystem/img-processor";
 import { toUserDTO } from "@/lib/mappers/user.mapper";
 import { prisma } from "@/lib/prisma";
 import { profileSchema } from "@/lib/validations/settings.schemas";
@@ -41,6 +41,13 @@ export async function patchProfileAction({
 }): Promise<UserDTO> {
   // recupération du user en cours
   const user = await requireUser();
+
+  //  on récupère son avatar s'il en a un pour l'effacer après MAJ avec un nouevl avatar
+  const currentUser = await prisma.user.findUnique({
+    where: { id: user.userId },
+    select: { avatarUrl: true },
+  });
+
   // Validation des données avec ZOD, safeParse
   const safeParse = profileSchema.safeParse({ name, password });
   if (!safeParse.success) {
@@ -49,6 +56,11 @@ export async function patchProfileAction({
   // On sauvegarde l'avatar
   //  si plantage, on recupère un undefined
   const avatarUrl = await processAvatarFile("user", file);
+
+  //  on supprime l'ancien si le nouvel avatar est ok
+  if (avatarUrl && currentUser?.avatarUrl) {
+    await deleteOldAvatar(currentUser.avatarUrl);
+  }
 
   //Craft update data
   const updateData: { name?: string; password?: string; avatarUrl?: string } = {

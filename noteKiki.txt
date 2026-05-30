@@ -67,3 +67,16 @@ dark mode                            → localStorage
 jwt auth                             → cookie httpOnly
 formulaire en cours de remplissage   → localStorage
 input password                       → useState
+
+
+Pour tester typescript avant deploiement
+dans tsconfig
+"exclude": ["node_modules", ".next", ".next/**"]
+puis dans le terminal
+npx tsc --noEmit
+
+on teste aussi le linter
+npm run lint
+
+build local avant déploiement
+npm run build

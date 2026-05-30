@@ -92,7 +92,8 @@ export default function AuthForm({ mode }: { mode: "login" | "register" }) {
             Password
           </label>
           <input
-            type="text" // en prod, on mettra password et pas text !
+            // type="text" // en prod, on mettra password et pas text !
+            type="password" 
             id="password"
             name="password"
             className="w-full mt-1 px-2 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
